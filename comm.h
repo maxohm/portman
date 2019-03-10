@@ -1,6 +1,6 @@
 #ifndef COMM_H
 #define COMM_H
-
+//
 #include <QObject>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QtSerialPort/QSerialPort>
@@ -12,12 +12,16 @@ class comm : public QObject
 public:
     explicit comm(QObject *parent = nullptr);
     QSerialPortInfo* info;
+    QStringList* list;
     QList<QSerialPort*>* port;
 
 signals:
 
 public slots:
     QStringList* init();
+    QByteArray* rx();
+    void tx(QByteArray* b);
+
 };
 
 #endif // COMM_H
