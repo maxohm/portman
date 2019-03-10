@@ -28,12 +28,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     test.cpp \
-    comm.cpp
+    comm.cpp \
+    mport.cpp
 
 
 HEADERS += \
     test.h \
-    comm.h
+    comm.h \
+    mport.h
 
 FORMS += \
     test.ui

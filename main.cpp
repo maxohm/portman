@@ -1,5 +1,5 @@
 #include "test.h"
-#include "comm.h"
+
 //
 #include <QApplication>
 #include <QCoreApplication>
@@ -41,15 +41,11 @@ int main(int argc, char *argv[])
 
     //return 0;
 
-    comm* comm1;
-    comm1 = new comm();
-
     test w;
+
     w.show();
     w.log("int main()");
-
-    w.log("ports available:  "+QString::number(comm1->list->size()));
-
+    w.log("ports available:  "+QString::number(w.comm1->ports->count()));
 
     return a.exec();
 }

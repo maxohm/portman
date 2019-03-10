@@ -1,7 +1,10 @@
 #ifndef TEST_H
 #define TEST_H
-
+//
+#include "comm.h"
+//
 #include <QMainWindow>
+//
 
 namespace Ui {
 class test;
@@ -14,9 +17,14 @@ class test : public QMainWindow
 public:
     explicit test(QWidget *parent = 0);
     ~test();
+    //
+    QString st;
+    comm* comm1;
+    unsigned char empty_lim = 20;
 
 public slots:
     void log(QString s);
+    void poll();
 
 private:
     Ui::test *ui;
