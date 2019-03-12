@@ -5,8 +5,8 @@
 //
 #include <QObject>
 #include <QtSerialPort/QSerialPortInfo>
-#include <QtSerialPort/QSerialPort>
-#include <QList>
+//#include <QtSerialPort/QSerialPort>
+//#include <QList>
 
 class comm : public QObject
 {
@@ -16,7 +16,7 @@ public:
     ~comm();
     //
     QSerialPortInfo* info;
-    QStringList* list;
+    QStringList list;
     QList<mport*>* ports;
     //
     QTimer* ticker;
@@ -27,13 +27,12 @@ signals:
     void readyRead();
 
 public slots:
-    //QByteArray* rx(int i);
-    //void tx(int i, QByteArray* b);
+    QByteArray* rx(int i);
+    QByteArray* rx(QString s);
 
 private slots:
     void init();
     void poll();
-
 };
 
 #endif // COMM_H

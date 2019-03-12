@@ -1,8 +1,29 @@
 #include "mport.h"
+//
+QString byte2hexs(QByteArray* b){  // byte to hexadecimal string
+    QString s = "";
+    //
+    for (int i=0; i<b->length(); i++){
+        QString _s = QString::number(b->at(i), 16).toUpper();
+        //
+        switch(_s.length()){
+        case 0:
+            s+="0x00 ";
+            break;
+        case 1:
+            s+="0x0"+_s+" ";
+            break;
+        default:
+            s+="0x"+_s+" ";
+            break;
+        };
+    }
+    //
+    return s;
+}
 
 mport::mport(QObject *parent) : QObject(parent)
 {
-    //this->ticker = new QTimer();
     this->buff = new QByteArray();
 }
 
@@ -16,6 +37,7 @@ QByteArray* mport::rx(){
     QByteArray* _rx = new QByteArray(
                 this->port->readAll()
                 );
+    this->port->clear(QSerialPort::AllDirections); // to clear or not to clear ...
     return _rx;
 };
 
@@ -27,7 +49,8 @@ void mport::tx(QByteArray* b){
 };
 
 void mport::poll(){
-    this->buff->append(
-                this->rx()->data()
-                );
+ QByteArray* _rx = this->rx();
+ this->buff->append(
+             _rx->right(_rx->length())
+             );
 }

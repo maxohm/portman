@@ -2,6 +2,7 @@
 #include "test.h"
 //
 #include <QDate>
+#include <QDebug>
 
 test::test(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,12 @@ test::test(QWidget *parent) :
     connect(this->ui->log->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this->ui->log, SLOT(scrollToBottom()));
     //
     this->comm1 = new comm();
+    ui->rxlist->addItems(
+                QStringList(this->comm1->list)
+                );
+    ui->txlist->addItems(
+                QStringList(this->comm1->list)
+                );
     connect(this->comm1,SIGNAL(readyRead()),this,SLOT(poll()));
 }
 
@@ -35,16 +42,27 @@ void test::log(QString s)
 void test::poll(){
     if (0>=empty_lim) return;
     //
-    this->log("poll "+
+    this->log("test::poll() "+
               QString::number(this->comm1->polled)+
-              " port buffers filled with "+
+              " ports / "+
               QString::number(this->comm1->total)+
               " bytes "
               );
     //
-    if (0<this->comm1->total) {
+    if (this->total!=this->comm1->total) {
         empty_lim = 20;
+        this->total = this->comm1->total;
     } else empty_lim--;
     //
-    if (0>=empty_lim) log(" 20 sec. no data - pollinq sequence stopped ...");
+    if (0>=empty_lim)
+        log("test::poll() no data - pollinq sequence aborted ...");
+    if (0>=ui->rxlist->currentText().length()) return;
+    //
+    log("test::poll() "+
+        ui->rxlist->currentText()+
+        " data "+
+        byte2hexs(
+            this->comm1->rx(
+                ui->rxlist->currentText()
+                )));
 };

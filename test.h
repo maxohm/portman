@@ -2,7 +2,6 @@
 #define TEST_H
 //
 #include "comm.h"
-//
 #include <QMainWindow>
 //
 
@@ -21,6 +20,7 @@ public:
     QString st;
     comm* comm1;
     unsigned char empty_lim = 20;
+    int total;
 
 public slots:
     void log(QString s);

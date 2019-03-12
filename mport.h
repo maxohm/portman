@@ -2,11 +2,10 @@
 #define MPORT_H
 //
 #include <QObject>
-#include <QtSerialPort/QSerialPort>
-#include <QTimer>
+#include <QtSerialPort>
 //
-static const int sttime = 56;
-
+QString byte2hexs(QByteArray* b);
+//
 class mport : public QObject
 {
     Q_OBJECT
@@ -16,8 +15,6 @@ public:
     //
     QSerialPort* port;
     QByteArray* buff;
-    //
-    //QTimer* ticker;
 
 public slots:
     void poll();
@@ -25,7 +22,6 @@ public slots:
     void tx(QByteArray* b);
 
 signals:
-
 
 };
 
