@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     //
     test w;
     w.show();
-    w.log("int main() ports available: "+
+    w.log("int main() доступных портов: "+
           QString::number(
               w.comm1->ports->count()
               ));

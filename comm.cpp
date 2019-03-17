@@ -1,4 +1,5 @@
 #include "comm.h"
+//
 
 comm::comm(QObject *parent) : QObject(parent)
 {
@@ -47,19 +48,86 @@ void comm::init(){
     };
 };
 
+bool comm::clear(int i){
+    return this->ports->at(i)->clear();
+}
+
+bool comm::clear(QString s){
+    int i = this->list.indexOf(s);
+    //
+    if (0<=i)
+        return this->ports->at(i)->clear();
+    return false;
+}
+
 QByteArray* comm::rx(int i){
-    QByteArray* _rx = new QByteArray(this->ports->at(i)->buff->right(
-                this->ports->at(i)->buff->length()
-                ));
-    this->ports->at(i)->buff->clear();
+    QByteArray* _rx = new QByteArray(
+                this->ports->at(i)->buff->remove(
+                    0, this->ports->at(i)->buff->length()
+                    ));
+    //this->ports->at(i)->buff->clear();
     return _rx;
 };
+
+QList<QByteArray*>* comm::rx(QByteArray* _rx, unsigned char ps, unsigned char pe){
+    //
+    QList<QByteArray*>* flist = new QList<QByteArray*>();
+    //
+    // ************************************************************
+    // ***************** filter engine 20190301 *******************
+    // ************************************************************
+    //
+    int _pst = 0;
+    int _pse = 1;
+    int _psl;
+    //
+    if (!_rx->isNull())
+        if (!_rx->isEmpty())
+            if (0<_rx->size())
+                while (0<=_pst && _pst<_pse){
+                    _pst = _rx->indexOf(ps);
+                    _pse = _rx->indexOf(pe);
+                    _psl = _pse-_pst+1;
+                    //
+                    if (0<=_pst)
+                        if (_pst<_pse){
+                            flist->push_back(
+                                        new QByteArray(
+                                            _rx->remove(_pst,_psl)
+                                            )
+                                        );
+                        };
+                };
+    //
+    // ************************************************************
+    // ************************************************************
+    // ************************************************************
+    return flist;
+};
+
+QList<QByteArray*>* comm::rx(int i, unsigned char ps, unsigned char pe){
+    QByteArray* _rx = this->rx(i);
+    return this->rx(_rx,ps,pe);
+};
+
+QList<QByteArray*>* comm::rx(QString s, unsigned char ps, unsigned char pe){
+    QByteArray* _rx = this->rx(s);
+    return this->rx(_rx,ps,pe);
+};
+
 
 QByteArray* comm::rx(QString s){
     int i = this->list.indexOf(s);
     //
     if (0<=i)
         return this->rx(i);
+    //*************************************************************
+    QFile* f = new QFile(s);
+    if (f->open(QIODevice::ReadOnly))
+        return new QByteArray(
+                    f->readAll()
+                    );
+    //*************************************************************
     return new QByteArray();
 };
 

@@ -22,13 +22,19 @@ public:
     QTimer* ticker;
     int polled;
     int total;
+    //
+    QByteArray* rx(QString s);
+    QByteArray* rx(int i);
+    //
+    QList<QByteArray*>* rx(QByteArray* _rx, unsigned char ps, unsigned char pe);
+    QList<QByteArray*>* rx(int i, unsigned char ps, unsigned char pe);
+    QList<QByteArray*>* rx(QString s, unsigned char ps, unsigned char pe);
+    //
+    bool clear(int i);
+    bool clear(QString s);
 
 signals:
     void readyRead();
-
-public slots:
-    QByteArray* rx(int i);
-    QByteArray* rx(QString s);
 
 private slots:
     void init();

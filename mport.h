@@ -5,6 +5,7 @@
 #include <QtSerialPort>
 //
 QString byte2hexs(QByteArray* b);
+QByteArray* hexs2byte(QString s);
 //
 class mport : public QObject
 {
@@ -20,6 +21,7 @@ public slots:
     void poll();
     QByteArray* rx();
     void tx(QByteArray* b);
+    bool clear();
 
 signals:
 

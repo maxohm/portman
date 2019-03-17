@@ -28,8 +28,14 @@ public slots:
 
 private:
     Ui::test *ui;
+    //
+    QFile* infile;
+    QFile* outfile;
 
 private slots:
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_4_clicked();
 };
 
 #endif // TEST_H
