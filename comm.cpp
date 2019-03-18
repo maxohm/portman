@@ -72,32 +72,30 @@ QByteArray* comm::rx(int i){
 QList<QByteArray*>* comm::rx(QByteArray* _rx, unsigned char ps, unsigned char pe){
     //
     QList<QByteArray*>* flist = new QList<QByteArray*>();
+    if (_rx->isNull() || _rx->isEmpty() || 0>=_rx->size()) return flist;
     //
     // ************************************************************
-    // ***************** filter engine 20190301 *******************
+    // ***************** filter engine 20190318 *******************
     // ************************************************************
     //
     int _pst = 0;
     int _pse = 1;
     int _psl;
     //
-    if (!_rx->isNull())
-        if (!_rx->isEmpty())
-            if (0<_rx->size())
-                while (0<=_pst && _pst<_pse){
-                    _pst = _rx->indexOf(ps);
-                    _pse = _rx->indexOf(pe);
-                    _psl = _pse-_pst+1;
-                    //
-                    if (0<=_pst)
-                        if (_pst<_pse){
-                            flist->push_back(
-                                        new QByteArray(
-                                            _rx->remove(_pst,_psl)
-                                            )
-                                        );
-                        };
-                };
+    int i = _rx->count(ps);
+    //
+    while (0<i) {
+        _pse = _rx->lastIndexOf(pe);
+        _pst = _rx->lastIndexOf(ps);
+        _psl = _pse-_pst+1;
+        //
+        flist->push_front(
+                    new QByteArray(
+                        _rx->mid(_pst,_psl)));
+        //                    );
+        _rx->truncate(_pst);
+        i--;
+    };
     //
     // ************************************************************
     // ************************************************************

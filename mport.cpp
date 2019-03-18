@@ -3,10 +3,10 @@
 QString byte2hexs(QByteArray* b){  // byte to hexadecimal string
     QString s = "";
     //
-    for (int i=0; i<b->length(); i++){
+    for (int i=0; i<b->size(); i++){
         QString _s = QString::number(b->at(i), 16).toUpper();
         //
-        switch(_s.length()){
+        switch(_s.size()){
         case 0:
             s+="00 ";
             break;
